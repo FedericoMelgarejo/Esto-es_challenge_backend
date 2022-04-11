@@ -69,21 +69,10 @@ const projectsRepository = {
     return deleted;
   },
   searchProjects: async function (page, size, search) {
-    const counted = await projects.findAndCountAll()
-    const {count} = counted
-    const results = await projects.findAll(
-      search,
-      {
-        attributes: { exclude: ["deletedAt"] },
-        include: {
-          association: "Contributor",
-          attributes: { exclude: ["deletedAt"] },
-        },
-        limit: size,
-        offset: page * size,
-      }
-    );
-    const response = {count, results}
+    const counted = await projects.findAndCountAll();
+    const { count } = counted;
+    const results = await projects.findAll(search);
+    const response = { count, results };
 
     return response;
   },

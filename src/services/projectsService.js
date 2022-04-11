@@ -3,8 +3,7 @@ const { Op } = require("sequelize");
 
 const projectsService = {
   getAllProjects: async (req, res) => {
-    
-    let {page, size, prevPage} = req.query
+    let { page, size, prevPage } = req.query;
 
     const projects = await getAll(page, size);
 
@@ -137,14 +136,23 @@ const projectsService = {
     }
   },
   search: async function (req, res) {
-    let search = { where: {} };
-
-    let { page, size, prevPage, name} = req.query
+    let { page, size, prevPage, name } = req.query;
+    
+    let search = {
+    attributes: { exclude: ["deletedAt"] },
+      include: {
+        association: "Contributor",
+        attributes: { exclude: ["deletedAt"] },
+      },
+      limit: size,
+      offset: page * size,
+      where: {},
+    };
 
     if (name != undefined && name.trim().length > 0) {
       search.where.name = { [Op.like]: `%${name.trim()}%` };
     }
-
+    
     const response = await searchProjects(page, size, search);
 
     try {
@@ -155,8 +163,8 @@ const projectsService = {
           page: page,
           nextPage: page + 1,
           previousPage: prevPage,
-          search:name,
-          results:response.results,
+          search: name,
+          results: response.results,
         });
       } else {
         res.status(400).json({
