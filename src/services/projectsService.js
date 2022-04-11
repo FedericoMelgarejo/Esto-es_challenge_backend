@@ -76,7 +76,7 @@ const projectsService = {
     } catch (errors) {
       res.status(500).json({
         status: "error",
-        message: "Error creating the project",
+        message: "Internal error",
       }),
         console.log(errors);
     }

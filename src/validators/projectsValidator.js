@@ -1,5 +1,5 @@
 const { check, body } = require("express-validator");
-const { users } = require("../database/models");
+const { members } = require("../database/models");
 const { validate } = require("../utils/validateHelper");
 
 const validateCreate = [
@@ -29,9 +29,9 @@ const validateCreate = [
     .isNumeric()
     .withMessage("Field project_manager_id must be a number"),
   body("project_manager_id").custom(async (value) => {
-    const exist = await users.findByPk(value);
+    const exist = await members.findByPk(value);
     if (!exist) {
-      return Promise.reject("Project manager id must belong to existing user");
+      return Promise.reject("Project manager id must belong to existing member");
     }
   }),
   check("contributor_id")
@@ -42,9 +42,9 @@ const validateCreate = [
     .isNumeric()
     .withMessage("Field contributor_id must be a number"),
   body("contributor_id").custom(async (value) => {
-    const exist = await users.findByPk(value);
+    const exist = await members.findByPk(value);
     if (!exist) {
-      return Promise.reject("Contributor id must belong to existing user");
+      return Promise.reject("Contributor id must belong to existing member");
     }
   }),
   (req, res, next) => validate(req, res, next),

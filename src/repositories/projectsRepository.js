@@ -33,7 +33,14 @@ const projectsRepository = {
       projectManagerId: parseInt(body.project_manager_id.trim()),
       contributorId: parseInt(body.contributor_id.trim()),
     });
-    return project;
+    const created = projects.findByPk(project.id, {
+      attributes: { exclude: ["deletedAt"] },
+      include: {
+        association: "Contributor",
+        attributes: { exclude: ["deletedAt"] },
+      },
+    });
+    return created;
   },
   update: async function (id, data) {
     const patch = await projects.update(
