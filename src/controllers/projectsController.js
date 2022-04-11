@@ -1,4 +1,4 @@
-const { getAllProjects, getOne, newOne, deleteOne, updateOne  } = require("../services/projectsService");
+const { getAllProjects, getOne, newOne, deleteOne, updateOne, search  } = require("../services/projectsService");
 
 const projectsController = {
   getProjectsList: async (req, res) => {
@@ -15,6 +15,9 @@ const projectsController = {
   },
   deleteProject: async (req, res) => {
     await deleteOne(req, res);
+  },
+  search: async (req, res) => {
+    await search(req, res);
   },
 };
 

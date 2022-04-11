@@ -1,11 +1,14 @@
+const { Op } = require("sequelize");
 const { projects } = require("../database/models");
 
 const projectsRepository = {
   getAll: async function (page, size) {
-
     const list = await projects.findAndCountAll({
       attributes: { exclude: ["deletedAt"] },
-      include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
+      include: {
+        association: "Contributor",
+        attributes: { exclude: ["deletedAt"] },
+      },
       limit: size,
       offset: page * size,
     });
@@ -14,7 +17,10 @@ const projectsRepository = {
   findByPk: async function (id) {
     const project = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
+      include: {
+        association: "Contributor",
+        attributes: { exclude: ["deletedAt"] },
+      },
     });
 
     return project;
@@ -46,7 +52,10 @@ const projectsRepository = {
     );
     const updated = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
+      include: {
+        association: "Contributor",
+        attributes: { exclude: ["deletedAt"] },
+      },
     });
 
     return updated;
@@ -58,6 +67,25 @@ const projectsRepository = {
       },
     });
     return deleted;
+  },
+  searchProjects: async function (page, size, search) {
+    const counted = await projects.findAndCountAll()
+    const {count} = counted
+    const results = await projects.findAll(
+      {
+        attributes: { exclude: ["deletedAt"] },
+        include: {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        limit: size,
+        offset: page * size,
+      },
+      search
+    );
+    const response = {count, results}
+
+    return response;
   },
 };
 

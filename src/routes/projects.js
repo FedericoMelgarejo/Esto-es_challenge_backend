@@ -1,10 +1,13 @@
 var express = require("express");
-const { getProjectsList, createProject, getSingleProject, deleteProject, updateProject } = require('../controllers/projectsController');
+const { getProjectsList, createProject, getSingleProject, deleteProject, updateProject, search } = require('../controllers/projectsController');
+const { pagination } = require("../middlewares/paginationMiddleware");
 const { validateCreate } = require("../validators/projectsValidator");
 var router = express.Router();
 
-/* GET projects listing. */
-router.get("/list", getProjectsList);
+
+router.get("/list", pagination, getProjectsList);
+
+router.get("/search", pagination, search);
 
 router.post("/create", validateCreate, createProject);
 

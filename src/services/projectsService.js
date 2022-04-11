@@ -1,19 +1,10 @@
-const { findByPk, getAll, create, destroy, update } = require("../repositories/projectsRepository");
+const { findByPk, getAll, create, destroy, update, searchProjects } = require("../repositories/projectsRepository");
+const { Op } = require("sequelize");
 
 const projectsService = {
   getAllProjects: async (req, res) => {
-    const pageAsNumber = Number.parseInt(req.query.page);
-    const sizeAsNumber = Number.parseInt(req.query.size);
-
-    let page = 0;
-    if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-      page = pageAsNumber;
-    }
-
-    let size = 10;
-    if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-      size = sizeAsNumber;
-    }
+    
+    let {page, size, prevPage} = req.query
 
     const projects = await getAll(page, size);
 
@@ -24,7 +15,7 @@ const projectsService = {
           totalPages: Math.ceil(projects.count / size),
           page: page,
           nextPage: page + 1,
-          previousPage: page - 1,
+          previousPage: prevPage,
           content: projects.rows,
         });
       } else {
@@ -66,7 +57,6 @@ const projectsService = {
     }
   },
   newOne: async function (req, res) {
-
     const body = req.body;
 
     const project = await create(body);
@@ -144,6 +134,42 @@ const projectsService = {
         }),
           console.log(errors);
       };
+    }
+  },
+  search: async function (req, res) {
+    let search = { where: {} };
+
+    let { page, size, prevPage, name} = req.query
+
+    if (name != undefined && name.trim().length > 0) {
+      search.where.name = { [Op.like]: `%${name.trim()}%` };
+    }
+
+    const response = await searchProjects(page, size, search);
+
+    try {
+      if (response.results != undefined && response.results.length > 0) {
+        res.status(200).json({
+          status: "OK",
+          totalPages: Math.ceil(response.count / size),
+          page: page,
+          nextPage: page + 1,
+          previousPage: prevPage,
+          search:name,
+          results:response.results,
+        });
+      } else {
+        res.status(400).json({
+          status: "error",
+          message: "Sorry, there are no results for this search.",
+        });
+      }
+    } catch (errors) {
+      res.status(500).json({
+        status: "error",
+        message: "Error getting the projetcs",
+      }),
+        console.log(errors);
     }
   },
 };
