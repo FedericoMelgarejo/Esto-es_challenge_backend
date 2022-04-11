@@ -72,6 +72,7 @@ const projectsRepository = {
     const counted = await projects.findAndCountAll()
     const {count} = counted
     const results = await projects.findAll(
+      search,
       {
         attributes: { exclude: ["deletedAt"] },
         include: {
@@ -80,8 +81,7 @@ const projectsRepository = {
         },
         limit: size,
         offset: page * size,
-      },
-      search
+      }
     );
     const response = {count, results}
 
