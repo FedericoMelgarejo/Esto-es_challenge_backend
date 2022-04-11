@@ -1,16 +1,17 @@
-var express = require('express');
+var express = require("express");
 const { getProjectsList, createProject, getSingleProject, deleteProject, updateProject } = require('../controllers/projectsController');
+const { validateCreate } = require("../validators/projectsValidator");
 var router = express.Router();
 
 /* GET projects listing. */
-router.get('/list', getProjectsList);
+router.get("/list", getProjectsList);
 
-router.post('/create', createProject);
+router.post("/create", validateCreate, createProject);
 
-router.get('/:id', getSingleProject);
+router.get("/:id", getSingleProject);
 
-router.delete('/delete/:id', deleteProject);
+router.delete("/delete/:id", deleteProject);
 
-router.put('/update/:id', updateProject);
+router.put("/update/:id", validateCreate, updateProject);
 
 module.exports = router;

@@ -14,7 +14,7 @@ const projectsRepository = {
   findByPk: async function (id) {
     const project = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: { association: "Contributor" },
+      include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
     });
 
     return project;
@@ -24,8 +24,8 @@ const projectsRepository = {
       name: body.name.trim(),
       description: body.description.trim(),
       status: parseInt(body.status.trim()),
-      projectManagerId: parseInt(body.project_manager.trim()),
-      contributorId: parseInt(body.contributor.trim()),
+      projectManagerId: parseInt(body.project_manager_id.trim()),
+      contributorId: parseInt(body.contributor_id.trim()),
     });
     return project;
   },
@@ -35,8 +35,8 @@ const projectsRepository = {
         name: data.name.trim(),
         description: data.description.trim(),
         status: parseInt(data.status.trim()),
-        projectManagerId: parseInt(data.project_manager.trim()),
-        contributorId: parseInt(data.contributor.trim()),
+        projectManagerId: parseInt(data.project_manager_id.trim()),
+        contributorId: parseInt(data.contributor_id.trim()),
       },
       {
         where: {
@@ -46,7 +46,7 @@ const projectsRepository = {
     );
     const updated = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: { association: "Contributor" },
+      include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
     });
 
     return updated;
@@ -58,21 +58,6 @@ const projectsRepository = {
       },
     });
     return deleted;
-  },
-  addUser: async (id) => {
-    const added = await projects.addUser(id);
-  },
-  addPM: async (project, pmId) => {
-    const added = await projects.update(
-      {
-        fk_project_manager_id: pmId,
-      },
-      {
-        where: {
-          id: project.id,
-        },
-      }
-    );
   },
 };
 
