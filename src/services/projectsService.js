@@ -2,12 +2,31 @@ const { findByPk, getAll, create, destroy, update } = require("../repositories/p
 
 const projectsService = {
   getAllProjects: async (req, res) => {
-    
-    const projects = await getAll(req);
+
+    const pageAsNumber = Number.parseInt(req.query.page)
+    const sizeAsNumber = Number.parseInt(req.query.size)
+
+    let page = 0
+    if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+      page = pageAsNumber
+    }
+
+    let size = 10
+    if(!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10){
+      size = sizeAsNumber
+    }
+
+    const projects = await getAll(page, size);
     
     try {
-      if (projects.length >= 1 && projects != undefined) {
-        res.status(200).json(projects);
+      if (projects != undefined) {
+        res.status(200).json({
+          totalPages: Math.ceil(projects.count / size),
+          page:page,
+          nextPage:page + 1,
+          previousPage:page - 1,
+          content:projects.rows,
+        });
       } else {
         res.status(400).json({ msg: "Sorry, there are no projects to show." });
       }

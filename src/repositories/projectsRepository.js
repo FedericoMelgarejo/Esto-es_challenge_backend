@@ -1,11 +1,13 @@
 const { projects } = require("../database/models");
 
 const projectsRepository = {
-  getAll: async function () {
+  getAll: async function (page, size) {
 
-    const list = await projects.findAll({
+    const list = await projects.findAndCountAll({
       attributes: { exclude: ["deletedAt"] },
       include: { association: "Contributor", attributes: { exclude: ["deletedAt"] } },
+      limit: size,
+      offset: page * size,
     });
     return list;
   },
