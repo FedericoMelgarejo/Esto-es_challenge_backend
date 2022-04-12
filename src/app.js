@@ -12,7 +12,7 @@ const swaggerConfig = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Project Managemente Service API",
+      title: "Project Management API",
       version: "1.0.0",
     },
     servers:[
