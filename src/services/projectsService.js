@@ -93,7 +93,7 @@ const projectsService = {
           message: "Project deleted!",
         });
       } else {
-        res.status(204).json({
+        res.status(400).json({
           status: "error",
           message: "Sorry, there are no projects with this id.",
         });
