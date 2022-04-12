@@ -68,7 +68,7 @@ const memberServices = {
           message: "Member deleted!",
         });
       } else {
-        res.status(204).json({
+        res.status(400).json({
           status: "error",
           message: "Sorry, there are no members with this id.",
         });
