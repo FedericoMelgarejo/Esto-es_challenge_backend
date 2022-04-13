@@ -3,9 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get("/", (req, res) => {
-  res.send(
-    'Welcome to my project managemnet service! you can go to "api/v1/docs" to get started.'
-  );
+  res.render('index',{title:"Project Manager App"});
 });
 
 module.exports = router;
