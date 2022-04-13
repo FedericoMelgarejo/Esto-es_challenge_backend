@@ -14,6 +14,7 @@ const swaggerConfig = {
     info: {
       title: "Project Management API",
       version: "1.0.0",
+      description:"Welcome! this is a simple task organizer, you can create projects and members to assign to them. Every project must have a project manager and a contributor, you can add members and create projects from their respective endpoint below."
     },
     servers:[
       {
