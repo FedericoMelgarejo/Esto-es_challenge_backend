@@ -18,11 +18,12 @@ const swaggerConfig = {
     },
     servers:[
       {
-        url:"http://localhost:3000"
+        url:"https://project-manager-service.herokuapp.com"
       },
       {
-        url:"https://project-manager-service.herokuapp.com"
+        url:`http://localhost:${process.env.PORT || '3000'}`
       }
+      
     ]
   },
   apis: [`${path.join(__dirname,"./routes/*.js")}`]
