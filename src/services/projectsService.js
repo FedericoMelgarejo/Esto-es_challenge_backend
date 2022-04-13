@@ -140,10 +140,16 @@ const projectsService = {
     
     let search = {
     attributes: { exclude: ["deletedAt"] },
-      include: {
-        association: "Contributor",
-        attributes: { exclude: ["deletedAt"] },
-      },
+      include: [
+        {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        {
+          association: "Project Manager",
+          attributes: { exclude: ["deletedAt"] },
+        }
+      ],
       limit: size,
       offset: page * size,
       where: {},

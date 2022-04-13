@@ -18,6 +18,9 @@ const swaggerConfig = {
     servers:[
       {
         url:"http://localhost:3000"
+      },
+      {
+        url:"https://project-manager-service.herokuapp.com"
       }
     ]
   },

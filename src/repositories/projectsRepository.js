@@ -5,10 +5,16 @@ const projectsRepository = {
   getAll: async function (page, size) {
     const list = await projects.findAndCountAll({
       attributes: { exclude: ["deletedAt"] },
-      include: {
-        association: "Contributor",
-        attributes: { exclude: ["deletedAt"] },
-      },
+      include: [
+        {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        {
+          association: "Project Manager",
+          attributes: { exclude: ["deletedAt"] },
+        }
+      ],
       limit: size,
       offset: page * size,
     });
@@ -17,10 +23,16 @@ const projectsRepository = {
   findByPk: async function (id) {
     const project = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: {
-        association: "Contributor",
-        attributes: { exclude: ["deletedAt"] },
-      },
+      include: [
+        {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        {
+          association: "Project Manager",
+          attributes: { exclude: ["deletedAt"] },
+        }
+      ],
     });
 
     return project;
@@ -35,10 +47,16 @@ const projectsRepository = {
     });
     const created = projects.findByPk(project.id, {
       attributes: { exclude: ["deletedAt"] },
-      include: {
-        association: "Contributor",
-        attributes: { exclude: ["deletedAt"] },
-      },
+      include: [
+        {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        {
+          association: "Project Manager",
+          attributes: { exclude: ["deletedAt"] },
+        }
+      ],
     });
     return created;
   },
@@ -59,10 +77,16 @@ const projectsRepository = {
     );
     const updated = await projects.findByPk(id, {
       attributes: { exclude: ["deletedAt"] },
-      include: {
-        association: "Contributor",
-        attributes: { exclude: ["deletedAt"] },
-      },
+      include: [
+        {
+          association: "Contributor",
+          attributes: { exclude: ["deletedAt"] },
+        },
+        {
+          association: "Project Manager",
+          attributes: { exclude: ["deletedAt"] },
+        }
+      ],
     });
 
     return updated;
